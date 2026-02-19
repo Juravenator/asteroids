@@ -1,16 +1,20 @@
-import { drawBase } from "./base";
+import * as base from "./base";
+import * as canvas from "./canvas";
 import * as ship from "./ship";
 import * as stuff from "./stuff";
 
-const base = document.getElementById('base')! as HTMLCanvasElement;
-const basec = base.getContext('2d')!;
+const init = () => {
+    canvas.canvasFullscreen(canvas.base);
+    canvas.canvasWhiteStroke(canvas.base);
+    canvas.canvasFullscreen(canvas.game);
+    canvas.canvasWhiteStroke(canvas.game);
+}
 
-addEventListener('DOMContentLoaded', () => drawBase(base, basec))
-addEventListener('resize', () => drawBase(base, basec))
+addEventListener('resize', () => init())
+init();
 
+base.draw();
 ship.init();
-ship.pew();
-ship.redraw();
 stuff.init();
 
 let left = false;
@@ -47,7 +51,10 @@ const toggleKey = (key: string, state: boolean) => {
 
 const frame = () => {
     requestAnimationFrame(frame);
-    ship.frame(left, right, up);
-    stuff.frame();
+    ship.update(left, right, up);
+    stuff.update();
+    canvas.clearCanvas(canvas.game);
+    ship.draw();
+    stuff.draw();
 };
 requestAnimationFrame(frame);

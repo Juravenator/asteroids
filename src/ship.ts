@@ -1,5 +1,4 @@
-const ship = document.getElementById('ship')! as HTMLCanvasElement;
-const shipc = ship.getContext('2d')!;
+import { game } from "./canvas";
 
 type Pew = {
     x: number,
@@ -14,23 +13,11 @@ export const shipData = {
     x: window.innerWidth / 2,
     y: window.innerHeight / 2,
     rot: 0,
-    // a: 0,
     vx: 0,
     vy: 0,
     rotspeed: .05,
     vspeed: .1,
 };
-
-export const init = () => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    ship.width = w;
-    ship.height = h;
-
-    shipc.strokeStyle = 'white';
-    shipc.fillStyle = 'white';
-    shipc.lineWidth = 1;
-}
 
 const shipp = new Path2D();
 shipp.moveTo(-10, 10);
@@ -41,30 +28,28 @@ shipp.lineTo(10, 0);
 const pewp = new Path2D();
 pewp.moveTo(0, 0);
 pewp.lineTo(0, 5);
-export const redraw = () => {
-    shipc.resetTransform();
-    shipc.clearRect(0, 0, ship.width, ship.height);
-    shipc.translate(shipData.x, shipData.y);
-    shipc.rotate(shipData.rot);
-    shipc.stroke(shipp);
 
+export const init = () => {
+    draw();
+}
+
+export const draw = () => {
+    game.context.resetTransform();
+    game.context.translate(shipData.x, shipData.y);
+    game.context.rotate(shipData.rot);
+    game.context.stroke(shipp);
+
+    
     for (let i = 0; i < pews.length; i++) {
         const pew = pews[i]!;
-        if (pew.x < 0 || pew.x > window.innerWidth || pew.y < 0 || pew.y > window.innerHeight) {
-            pews.splice(i, 1);
-            i--;
-        }
-    }
-    for (let i = 0; i < pews.length; i++) {
-        const pew = pews[i]!;
-        shipc.resetTransform();
-        shipc.translate(pew.x, pew.y);
-        shipc.rotate(pew.rot);
-        shipc.stroke(pewp);
+        game.context.resetTransform();
+        game.context.translate(pew.x, pew.y);
+        game.context.rotate(pew.rot);
+        game.context.stroke(pewp);
     }
 }
 
-export const frame = (left: boolean, right: boolean, up: boolean) => {
+export const update = (left: boolean, right: boolean, up: boolean) => {
     if (left) {
         shipData.rot -= shipData.rotspeed
     }
@@ -92,12 +77,15 @@ export const frame = (left: boolean, right: boolean, up: boolean) => {
         shipData.y = -20;
     }
 
-    for (const pew of pews) {
+    for (let i = 0; i < pews.length; i++) {
+        const pew = pews[i]!;
         pew.x += pew.vx;
         pew.y += pew.vy;
+        if (pew.x < 0 || pew.x > window.innerWidth || pew.y < 0 || pew.y > window.innerHeight) {
+            pews.splice(i, 1);
+            i--;
+        }
     }
-
-    redraw()
 };
 
 export const pew = () => {

@@ -1,16 +1,6 @@
-const stuff = document.getElementById('stuff')! as HTMLCanvasElement;
-const stuffc = stuff.getContext('2d')!;
+import { game } from "./canvas";
 
 export const init = () => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    stuff.width = w;
-    stuff.height = h;
-
-    stuffc.strokeStyle = 'white';
-    stuffc.fillStyle = 'white';
-    stuffc.lineWidth = 1;
-
     for (let i = 0; i < 10; i++) {
         asteroids.push(newAstroid())
     }
@@ -65,29 +55,33 @@ export const newAstroid = (): Asteroid => {
     }
 };
 
-export const frame = () => {
+export const update = () => {
     for (let i = 0; i < asteroids.length; i++) {
         const asteroid = asteroids[i];
-        if (asteroid && (asteroid.x > window.innerWidth || asteroid.x < 0 || asteroid.y < 0 || asteroid.y > window.innerHeight)) {
-            asteroids[i] = null;
-            setTimeout(() => {
-                asteroids[i] = newAstroid();
-            }, getRandomInt(10000));
-        }
-    }
-    stuffc.resetTransform();
-    stuffc.clearRect(0, 0, stuff.width, stuff.height);
-    for (let asteroid of asteroids) {
         if (!asteroid) {
             continue
         }
         asteroid.x += asteroid.vx;
         asteroid.y += asteroid.vy;
         asteroid.rot += asteroid.vrot;
-        stuffc.resetTransform();
-        stuffc.translate(asteroid.x, asteroid.y);
-        stuffc.rotate(asteroid.rot);
+        if (asteroid.x > window.innerWidth || asteroid.x < 0 || asteroid.y < 0 || asteroid.y > window.innerHeight) {
+            asteroids[i] = null;
+            setTimeout(() => {
+                asteroids[i] = newAstroid();
+            }, getRandomInt(10000));
+        }
+    }
+};
+
+export const draw = () => {
+    for (let asteroid of asteroids) {
+        if (!asteroid) {
+            continue
+        }
+        game.context.resetTransform();
+        game.context.translate(asteroid.x, asteroid.y);
+        game.context.rotate(asteroid.rot);
         const s = asteroid.size / 2;
-        stuffc.strokeRect(-s, -s, asteroid.size, asteroid.size);
+        game.context.strokeRect(-s, -s, asteroid.size, asteroid.size);
     }
 };
