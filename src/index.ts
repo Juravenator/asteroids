@@ -2,6 +2,7 @@ import * as base from "./base";
 import * as canvas from "./canvas";
 import * as ship from "./ship";
 import * as stuff from "./stuff";
+import * as pew from "./pew";
 
 const init = () => {
     canvas.canvasFullscreen(canvas.base);
@@ -25,8 +26,8 @@ addEventListener('keydown', e => {
     toggleKey(e.key, true);
     if (e.key == " ") {
         if (!spacepressed) {
-            spacepressed = setInterval(() => ship.pew(), 200);
-            ship.pew();
+            spacepressed = setInterval(() => pew.pew(), 200);
+            pew.pew();
         }
     }
 })
@@ -51,10 +52,12 @@ const toggleKey = (key: string, state: boolean) => {
 
 const frame = () => {
     requestAnimationFrame(frame);
-    ship.update(left, right, up);
-    stuff.update();
+    ship.move(left, right, up);
+    stuff.move();
+    pew.move();
     canvas.clearCanvas(canvas.game);
     ship.draw();
     stuff.draw();
+    pew.draw();
 };
 requestAnimationFrame(frame);

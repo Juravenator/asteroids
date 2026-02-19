@@ -55,7 +55,7 @@ export const newAstroid = (): Asteroid => {
     }
 };
 
-export const update = () => {
+export const move = () => {
     for (let i = 0; i < asteroids.length; i++) {
         const asteroid = asteroids[i];
         if (!asteroid) {
