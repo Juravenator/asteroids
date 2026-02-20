@@ -1,14 +1,14 @@
 import { game } from "./canvas";
 import { shipData } from "./ship";
 
-type Pew = {
+export type Pew = {
     x: number,
     y: number,
     vx: number,
     vy: number,
     rot: number,
 };
-const pews: Pew[] = [];
+export const pews: Pew[] = [];
 
 const pewp = new Path2D();
 pewp.moveTo(0, 0);
@@ -30,11 +30,15 @@ export const move = () => {
         pew.x += pew.vx;
         pew.y += pew.vy;
         if (pew.x < 0 || pew.x > window.innerWidth || pew.y < 0 || pew.y > window.innerHeight) {
-            pews.splice(i, 1);
+            destroy(i)
             i--;
         }
     }
 };
+
+export const destroy = (i: number) => {
+    pews.splice(i, 1);
+}
 
 export const pew = () => {
     const rot = shipData.rot;
