@@ -14,8 +14,8 @@ const shipp = new Path2D();
 shipp.moveTo(-10, 10);
 shipp.lineTo(0, -10);
 shipp.lineTo(10, 10);
-shipp.moveTo(-10, 0);
-shipp.lineTo(10, 0);
+shipp.moveTo(-10, 5);
+shipp.lineTo(10, 5);
 
 export const init = () => {
     draw();

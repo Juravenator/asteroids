@@ -67,10 +67,7 @@ export const move = () => {
         asteroid.y += asteroid.vy;
         asteroid.rot += asteroid.vrot;
         if (asteroid.x > window.innerWidth || asteroid.x < 0 || asteroid.y < 0 || asteroid.y > window.innerHeight) {
-            asteroids[i] = null;
-            setTimeout(() => {
-                asteroids[i] = newAstroid();
-            }, getRandomInt(10000));
+            destroyAstroid(i)
         }
     }
 };
@@ -88,8 +85,9 @@ export const draw = () => {
     }
 };
 
-export const destroyAstroid = (i: number) => {
-    asteroids.splice(i, 1);
+export const destroyAstroid = (i: number, respawn = 10000) => {
+    asteroids[i] = null;
+    setTimeout(() => asteroids[i] = newAstroid(), getRandomInt(respawn));
 }
 
 export const checkCollision = (x: number, y: number, ctx: CanvasRenderingContext2D): number | null => {
