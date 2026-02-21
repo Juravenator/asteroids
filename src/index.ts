@@ -15,9 +15,18 @@ let up = false;
 let spacepressed: number | null = null;
 addEventListener('keydown', e => {
     if (score.data.inputdisabled) {
+        left = right = up = false;
+        if (spacepressed) {
+            clearInterval(spacepressed);
+            spacepressed = null;
+        }
         return
     }
-    if (score.data.died) {
+    if (!score.data.firstinput) {
+        score.data.firstinput = true;
+        ship.shipData.protected = null;
+    }
+    if (score.data.died && score.data.lives == 0) {
         score.reset()
     }
     toggleKey(e.key, true);
@@ -64,7 +73,7 @@ const frame = () => {
     ship.draw();
     pew.draw();
 
-    if (score.data.died) {
+    if (score.data.died && score.data.lives == 0 || !score.data.firstinput) {
         maintext(score.data.inputdisabled ? "game over" : "press to play")
     }
 };

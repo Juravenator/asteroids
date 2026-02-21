@@ -10,6 +10,7 @@ export type ShipData = {
     vx: number,
     vy: number,
     vrot: number,
+    protected: number | null,
     destroyed: number | null,
 }
 
@@ -22,6 +23,7 @@ const newShipData = (): ShipData => {
         vy: 0,
         vrot: .05,
         v: .1,
+        protected: window.performance.now(),
         destroyed: null as number | null,
     }
 }

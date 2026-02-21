@@ -1,5 +1,7 @@
 import { canvas, context } from "./canvas";
 import * as score from "./score";
+import { shipData } from "./ship";
+import { cycleNum } from "./stuff";
 
 const heart = new Path2D();
 heart.moveTo(7.5, 12.5);
@@ -38,6 +40,13 @@ export const draw = () => {
 
     context.stroke();
     for (let i = 1; i <= score.data.lives; i++) {
+        if (shipData.protected && score.data.firstinput) {
+            const timediff = window.performance.now() - shipData.protected;
+            const evencycle = cycleNum(1000, 8, timediff) % 2;
+            if (evencycle) {
+                return
+            }
+        }
         context.resetTransform();
         context.translate(w - 5 - (20 * i), 10);
         context.stroke(heart);
