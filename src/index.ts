@@ -1,3 +1,4 @@
+import * as score from "./score";
 import * as base from "./base";
 import * as canvas from "./canvas";
 import * as ship from "./ship";
@@ -23,6 +24,12 @@ let right = false;
 let up = false;
 let spacepressed: number | null = null;
 addEventListener('keydown', e => {
+    if (score.data.inputdisabled) {
+        return
+    }
+    if (score.data.died) {
+        score.reset()
+    }
     toggleKey(e.key, true);
     if (e.key == " ") {
         if (!spacepressed) {
@@ -50,14 +57,24 @@ const toggleKey = (key: string, state: boolean) => {
     }
 }
 
+const maintext = (t: string) => {
+    const w = canvas.game.context.measureText(t).width;
+    canvas.game.context.resetTransform();
+    canvas.game.context.fillText(t, (window.innerWidth -w)/2, window.innerHeight / 4);
+}
+
 const frame = () => {
     requestAnimationFrame(frame);
     ship.move(left, right, up);
     stuff.move();
     pew.move();
     canvas.clearCanvas(canvas.game);
-    ship.draw();
     stuff.draw();
+    ship.draw();
     pew.draw();
+
+    if (score.data.died) {
+        maintext(score.data.inputdisabled ? "game over" : "press to play")
+    }
 };
 requestAnimationFrame(frame);

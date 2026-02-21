@@ -28,4 +28,5 @@ export const canvasWhiteStroke = (c: Canvas) => {
     c.context.strokeStyle = 'white';
     c.context.fillStyle = 'white';
     c.context.lineWidth = 1;
+    c.context.font = "48px 'Press Start 2P', system-ui";
 }

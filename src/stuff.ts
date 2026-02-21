@@ -1,5 +1,7 @@
 import { game } from "./canvas";
 import { pews } from "./pew";
+import { die } from "./score";
+import * as ship from "./ship";
 
 export const init = () => {
     for (let i = 0; i < 10; i++) {
@@ -88,38 +90,15 @@ export const draw = () => {
         const s = asteroid.size / 2;
         game.context.beginPath();
         if (asteroid.destroyed) {
-            const explodeTime = 1000;
-            const cycles = 8;
             const timediff = window.performance.now() - asteroid.destroyed;
-            if (timediff > explodeTime) {
+            if (timediff > 1000) {
                 removeAstroid(i)
             }
-            const evencycle = Math.floor(timediff / (explodeTime / cycles)) % 2;
-            const diagfar = evencycle ? 5 : 7;
-            const diagnear = diagfar - 3;
-            const horizfar = evencycle ? 8 : 11;
-            const horiznear = horizfar - 5;
-            game.context.moveTo(-diagfar, -diagfar);
-            game.context.lineTo(-diagnear, -diagnear);
-            game.context.moveTo(diagfar, diagfar);
-            game.context.lineTo(diagnear, diagnear);
-            game.context.moveTo(diagfar, -diagfar);
-            game.context.lineTo(diagnear, -diagnear);
-            game.context.moveTo(-diagfar, diagfar);
-            game.context.lineTo(-diagnear, diagnear);
-
-            game.context.moveTo(-horizfar, 0);
-            game.context.lineTo(-horiznear, 0);
-            game.context.moveTo(horizfar, 0);
-            game.context.lineTo(horiznear, 0);
-            game.context.moveTo(0, -horizfar);
-            game.context.lineTo(0, -horiznear);
-            game.context.moveTo(0, horizfar);
-            game.context.lineTo(0, horiznear);
-
-            game.context.stroke();
+            const evencycle = cycleNum(1000, 8, timediff) % 2;
             if (evencycle) {
-                game.context.fillRect(-1.5, -1.5, 3, 3);
+                drawExplosion([5,2], [8,3], 3);
+            } else {
+                drawExplosion([7,4], [11, 6]);
             }
         } else {
             game.context.moveTo(-s, -s);
@@ -132,6 +111,11 @@ export const draw = () => {
                     asteroid.destroyed = window.performance.now();
                 }
             }
+            for (const [x, y] of ship.collision_points()) {
+                if (game.context.isPointInPath(x, y)) {
+                    die();
+                }
+            }
             game.context.stroke();
         }
     }
@@ -140,4 +124,35 @@ export const draw = () => {
 export const removeAstroid = (i: number, respawn = 10000) => {
     asteroids[i] = null;
     setTimeout(() => asteroids[i] = newAstroid(), getRandomInt(respawn));
+}
+
+export const cycleNum = (period: number, cycles: number, t: number): number => {
+    return Math.floor(t / (period / cycles));
+}
+
+export const drawExplosion = (diag: [number, number], horiz: [number, number], center = 0) => {
+    const [diagfar, diagnear] = diag;
+    const [horizfar, horiznear] = diag;
+    game.context.moveTo(-diagfar, -diagfar);
+    game.context.lineTo(-diagnear, -diagnear);
+    game.context.moveTo(diagfar, diagfar);
+    game.context.lineTo(diagnear, diagnear);
+    game.context.moveTo(diagfar, -diagfar);
+    game.context.lineTo(diagnear, -diagnear);
+    game.context.moveTo(-diagfar, diagfar);
+    game.context.lineTo(-diagnear, diagnear);
+
+    game.context.moveTo(-horizfar, 0);
+    game.context.lineTo(-horiznear, 0);
+    game.context.moveTo(horizfar, 0);
+    game.context.lineTo(horiznear, 0);
+    game.context.moveTo(0, -horizfar);
+    game.context.lineTo(0, -horiznear);
+    game.context.moveTo(0, horizfar);
+    game.context.lineTo(0, horiznear);
+
+    game.context.stroke();
+    if (center) {
+        game.context.fillRect(-center/2, -center/2, center, center);
+    }
 }
