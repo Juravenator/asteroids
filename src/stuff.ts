@@ -35,8 +35,8 @@ function getRandomInt(max: number) {
 
 export const newAstroid = (): Asteroid => {
     let startpos = getRandomInt(3) as StartPos; // start at top, bottom, left, right
-    let vx = getRandomInt(10) / 4;
-    let vy = getRandomInt(10) / 4;
+    let vx = (getRandomInt(9) + 1) / 4;
+    let vy = (getRandomInt(9) + 1) / 4;
     let vrot = getRandomInt(5) / 10;
     let size = getRandomInt(30) / 2 + 10;
     let collision_radius = Math.sqrt(Math.pow(size, 2)*2) / 2
