@@ -1,5 +1,6 @@
 import { canvas, context } from "./canvas";
 import { cycleNum, drawExplosion } from "./stuff";
+import * as score from "./score";
 
 export type ShipData = {
     x: number,
@@ -56,8 +57,8 @@ export const draw = () => {
     context.resetTransform();
     context.translate(shipData.x, shipData.y);
     context.rotate(shipData.rot);
-    if (shipData.destroyed) {
-        const timediff = window.performance.now() - shipData.destroyed;
+    if (score.data.died && score.data.inputdisabled) {
+        const timediff = window.performance.now() - shipData.destroyed!;
         if (timediff < 2000) {
             const evencycle = cycleNum(1000, 8, timediff) % 2;
             if (evencycle) {

@@ -18,7 +18,6 @@ export let data = newScore();
 data.died = true; // pretend, so we see the new game text
 export const reset = () => {
     data = newScore();
-    ship.reset();
 };
 
 export const die = () => {
@@ -28,7 +27,10 @@ export const die = () => {
         if (!data.lives) {
             data.died = true;
             data.inputdisabled = true;
-            setTimeout(() => data.inputdisabled = false, 5000);
+            setTimeout(() => {
+                ship.reset();
+                data.inputdisabled = false
+            }, 5000);
         }
     }
 }
