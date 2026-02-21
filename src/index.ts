@@ -52,14 +52,6 @@ const toggleKey = (key: string, state: boolean) => {
 
 const frame = () => {
     requestAnimationFrame(frame);
-    for (let i = 0; i < pew.pews.length; i++) {
-        const p = pew.pews[i]!;
-        const ai = stuff.checkCollision(p.x, p.y, canvas.game.context);
-        if (ai != null) {
-            pew.destroy(i);
-            stuff.destroyAstroid(ai);
-        }
-    }
     ship.move(left, right, up);
     stuff.move();
     pew.move();

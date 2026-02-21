@@ -10,17 +10,16 @@ export type Pew = {
 };
 export const pews: Pew[] = [];
 
-const pewp = new Path2D();
-pewp.moveTo(0, 0);
-pewp.lineTo(0, 5);
-
 export const draw = () => {
     for (let i = 0; i < pews.length; i++) {
         const pew = pews[i]!;
         game.context.resetTransform();
         game.context.translate(pew.x, pew.y);
         game.context.rotate(pew.rot);
-        game.context.stroke(pewp);
+        game.context.beginPath();
+        game.context.moveTo(0, 0);
+        game.context.lineTo(0, 5);
+        game.context.stroke();
     }
 };
 
