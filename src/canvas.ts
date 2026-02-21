@@ -9,7 +9,6 @@ const init = () => {
     context.strokeStyle = 'white';
     context.fillStyle = 'white';
     context.lineWidth = 1;
-    context.font = "48px 'Press Start 2P', system-ui";
 }
 init();
 addEventListener('resize', () => init())

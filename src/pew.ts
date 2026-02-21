@@ -1,5 +1,6 @@
 import { canvas, context } from "./canvas";
 import { shipData } from "./ship";
+import * as score from "./score";
 
 export type Pew = {
     x: number,
@@ -46,4 +47,7 @@ export const pew = () => {
     const vx = shipData.vx + (Math.sin(rot) * 3);
     const vy = -shipData.vy - (Math.cos(rot) * 3);
     pews.push({x, y, vx, vy, rot})
+    if (score.data.score) {
+        score.data.score -= 1;
+    }
 };

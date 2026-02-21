@@ -57,6 +57,7 @@ const toggleKey = (key: string, state: boolean) => {
 }
 
 const maintext = (t: string) => {
+    context.font = "48px 'Press Start 2P', system-ui";
     const w = context.measureText(t).width;
     context.resetTransform();
     context.fillText(t, (canvas.width -w)/2, canvas.height / 4);

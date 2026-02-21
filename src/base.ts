@@ -51,4 +51,8 @@ export const draw = () => {
         context.translate(w - 5 - (20 * i), 10);
         context.stroke(heart);
     }
+
+    context.resetTransform();
+    context.font = "12px 'Press Start 2P', system-ui";
+    context.fillText(score.data.score.toString(), 10, 22);
 }

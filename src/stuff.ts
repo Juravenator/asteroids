@@ -1,6 +1,6 @@
 import { canvas, context } from "./canvas";
 import { pews } from "./pew";
-import { die } from "./score";
+import * as score from "./score";
 import * as ship from "./ship";
 
 export const init = () => {
@@ -109,12 +109,13 @@ export const draw = () => {
             for (const pew of pews) {
                 if (context.isPointInPath(pew.x, pew.y)) {
                     asteroid.destroyed = window.performance.now();
+                    score.data.score += 30;
                 }
             }
             for (const [x, y] of ship.collision_points()) {
                 if (context.isPointInPath(x, y)) {
                     asteroid.destroyed = window.performance.now();
-                    die();
+                    score.die();
                 }
             }
             context.stroke();
