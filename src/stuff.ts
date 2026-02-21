@@ -113,6 +113,7 @@ export const draw = () => {
             }
             for (const [x, y] of ship.collision_points()) {
                 if (context.isPointInPath(x, y)) {
+                    asteroid.destroyed = window.performance.now();
                     die();
                 }
             }
