@@ -1,4 +1,5 @@
 import * as ship from "./ship";
+import * as stuff from "./stuff";
 
 export type Score = {
     score: number,
@@ -28,21 +29,22 @@ export const die = () => {
     }
     if (data.lives) {
         data.lives -= 1;
-        ship.shipData.destroyed = window.performance.now();
+        ship.shipData.destroyed = ship.shipData.protected = window.performance.now();
         data.inputdisabled = true;
-        ship.shipData.protected = window.performance.now();
-        setTimeout(() => {
-            data.inputdisabled = false;
-            ship.reset();
+        if (data.lives) {
             setTimeout(() => {
-                ship.shipData.protected = null;
+                data.inputdisabled = false;
+                ship.reset();
+                setTimeout(() => {
+                    ship.shipData.protected = null;
+                }, 2000);
             }, 2000);
-        }, 2000);
-        if (!data.lives) {
+        } else {
             data.died = true;
             data.inputdisabled = true;
             setTimeout(() => {
                 ship.reset();
+                stuff.reset();
                 data.inputdisabled = false
             }, 5000);
         }

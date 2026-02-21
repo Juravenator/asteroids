@@ -8,6 +8,9 @@ export const init = () => {
         asteroids.push(newAstroid())
     }
 }
+export const reset = () => {
+    asteroids.length = 10;
+}
 
 type Asteroid = {
     size: number,
@@ -110,6 +113,7 @@ export const draw = () => {
                 if (context.isPointInPath(pew.x, pew.y)) {
                     asteroid.destroyed = window.performance.now();
                     score.data.score += 30;
+                    asteroids.push(newAstroid());
                 }
             }
             for (const [x, y] of ship.collision_points()) {
@@ -125,7 +129,11 @@ export const draw = () => {
 
 export const removeAstroid = (i: number, respawn = 10000) => {
     asteroids[i] = null;
-    setTimeout(() => asteroids[i] = newAstroid(), getRandomInt(respawn));
+    setTimeout(() => {
+        if (i < asteroids.length) {
+            asteroids[i] = newAstroid(), getRandomInt(respawn)
+        }
+    });
 }
 
 export const cycleNum = (period: number, cycles: number, t: number): number => {
