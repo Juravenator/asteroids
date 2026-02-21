@@ -44,8 +44,8 @@ export const pew = () => {
     const rot = shipData.rot;
     const x = shipData.x + (Math.sin(rot) * 20);
     const y = shipData.y - (Math.cos(rot) * 20);
-    const vx = shipData.vx + (Math.sin(rot) * 3);
-    const vy = -shipData.vy - (Math.cos(rot) * 3);
+    const vx = shipData.vx + (Math.sin(rot) * 5);
+    const vy = -shipData.vy - (Math.cos(rot) * 5);
     pews.push({x, y, vx, vy, rot})
     if (score.data.score) {
         score.data.score -= 1;
