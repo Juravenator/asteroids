@@ -112,7 +112,7 @@ export const draw = () => {
             for (const pew of pews) {
                 if (context.isPointInPath(pew.x, pew.y)) {
                     asteroid.destroyed = window.performance.now();
-                    score.data.score += 30;
+                    score.data.score += 10;
                     asteroids.push(newAstroid());
                 }
             }
