@@ -1,11 +1,8 @@
-import { base } from "./canvas";
+import { canvas, context } from "./canvas";
 
 export const draw = () => {
-    const w = base.canvas.width;
-    const h = base.canvas.height;
-    const context = base.context;
-
-    context.clearRect(0, 0, w, h);
+    const w = canvas.width;
+    const h = canvas.height;
 
     context.beginPath();
 

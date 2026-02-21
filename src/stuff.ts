@@ -1,4 +1,4 @@
-import { game } from "./canvas";
+import { canvas, context } from "./canvas";
 import { pews } from "./pew";
 import { die } from "./score";
 import * as ship from "./ship";
@@ -44,16 +44,16 @@ export const newAstroid = (): Asteroid => {
     let y = 0;
     let rot = 0;
     if (startpos == StartPos.Top) {
-        x = getRandomInt(window.innerWidth)
+        x = getRandomInt(canvas.width)
     } else if (startpos == 1) {
-        x = getRandomInt(window.innerWidth);
-        y = window.innerHeight;
+        x = getRandomInt(canvas.width);
+        y = canvas.height;
         vy = -vy;
     } else if (startpos == 2) {
-        y = getRandomInt(window.innerHeight);
+        y = getRandomInt(canvas.height);
     } else if (startpos == 3) {
-        x = window.innerWidth;
-        y = getRandomInt(window.innerHeight);
+        x = canvas.width;
+        y = getRandomInt(canvas.height);
         vx = -vx;
     }
     return {
@@ -72,7 +72,7 @@ export const move = () => {
         if (!asteroid.destroyed) {
             asteroid.rot += asteroid.vrot;
         }
-        if (asteroid.x > window.innerWidth || asteroid.x < 0 || asteroid.y < 0 || asteroid.y > window.innerHeight) {
+        if (asteroid.x > window.innerWidth || asteroid.x < 0 || asteroid.y < 0 || asteroid.y > canvas.height) {
             removeAstroid(i)
         }
     }
@@ -84,11 +84,11 @@ export const draw = () => {
         if (!asteroid) {
             continue
         }
-        game.context.resetTransform();
-        game.context.translate(asteroid.x, asteroid.y);
-        game.context.rotate(asteroid.rot);
+        context.resetTransform();
+        context.translate(asteroid.x, asteroid.y);
+        context.rotate(asteroid.rot);
         const s = asteroid.size / 2;
-        game.context.beginPath();
+        context.beginPath();
         if (asteroid.destroyed) {
             const timediff = window.performance.now() - asteroid.destroyed;
             if (timediff > 1000) {
@@ -101,22 +101,22 @@ export const draw = () => {
                 drawExplosion([7,4], [11, 6]);
             }
         } else {
-            game.context.moveTo(-s, -s);
-            game.context.lineTo(s, -s);
-            game.context.lineTo(s, s);
-            game.context.lineTo(-s, s);
-            game.context.closePath();
+            context.moveTo(-s, -s);
+            context.lineTo(s, -s);
+            context.lineTo(s, s);
+            context.lineTo(-s, s);
+            context.closePath();
             for (const pew of pews) {
-                if (game.context.isPointInPath(pew.x, pew.y)) {
+                if (context.isPointInPath(pew.x, pew.y)) {
                     asteroid.destroyed = window.performance.now();
                 }
             }
             for (const [x, y] of ship.collision_points()) {
-                if (game.context.isPointInPath(x, y)) {
+                if (context.isPointInPath(x, y)) {
                     die();
                 }
             }
-            game.context.stroke();
+            context.stroke();
         }
     }
 };
@@ -133,26 +133,26 @@ export const cycleNum = (period: number, cycles: number, t: number): number => {
 export const drawExplosion = (diag: [number, number], horiz: [number, number], center = 0) => {
     const [diagfar, diagnear] = diag;
     const [horizfar, horiznear] = diag;
-    game.context.moveTo(-diagfar, -diagfar);
-    game.context.lineTo(-diagnear, -diagnear);
-    game.context.moveTo(diagfar, diagfar);
-    game.context.lineTo(diagnear, diagnear);
-    game.context.moveTo(diagfar, -diagfar);
-    game.context.lineTo(diagnear, -diagnear);
-    game.context.moveTo(-diagfar, diagfar);
-    game.context.lineTo(-diagnear, diagnear);
+    context.moveTo(-diagfar, -diagfar);
+    context.lineTo(-diagnear, -diagnear);
+    context.moveTo(diagfar, diagfar);
+    context.lineTo(diagnear, diagnear);
+    context.moveTo(diagfar, -diagfar);
+    context.lineTo(diagnear, -diagnear);
+    context.moveTo(-diagfar, diagfar);
+    context.lineTo(-diagnear, diagnear);
 
-    game.context.moveTo(-horizfar, 0);
-    game.context.lineTo(-horiznear, 0);
-    game.context.moveTo(horizfar, 0);
-    game.context.lineTo(horiznear, 0);
-    game.context.moveTo(0, -horizfar);
-    game.context.lineTo(0, -horiznear);
-    game.context.moveTo(0, horizfar);
-    game.context.lineTo(0, horiznear);
+    context.moveTo(-horizfar, 0);
+    context.lineTo(-horiznear, 0);
+    context.moveTo(horizfar, 0);
+    context.lineTo(horiznear, 0);
+    context.moveTo(0, -horizfar);
+    context.lineTo(0, -horiznear);
+    context.moveTo(0, horizfar);
+    context.lineTo(0, horiznear);
 
-    game.context.stroke();
+    context.stroke();
     if (center) {
-        game.context.fillRect(-center/2, -center/2, center, center);
+        context.fillRect(-center/2, -center/2, center, center);
     }
 }

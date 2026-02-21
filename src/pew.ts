@@ -1,4 +1,4 @@
-import { game } from "./canvas";
+import { canvas, context } from "./canvas";
 import { shipData } from "./ship";
 
 export type Pew = {
@@ -13,13 +13,13 @@ export const pews: Pew[] = [];
 export const draw = () => {
     for (let i = 0; i < pews.length; i++) {
         const pew = pews[i]!;
-        game.context.resetTransform();
-        game.context.translate(pew.x, pew.y);
-        game.context.rotate(pew.rot);
-        game.context.beginPath();
-        game.context.moveTo(0, 0);
-        game.context.lineTo(0, 5);
-        game.context.stroke();
+        context.resetTransform();
+        context.translate(pew.x, pew.y);
+        context.rotate(pew.rot);
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(0, 5);
+        context.stroke();
     }
 };
 
@@ -28,7 +28,7 @@ export const move = () => {
         const pew = pews[i]!;
         pew.x += pew.vx;
         pew.y += pew.vy;
-        if (pew.x < 0 || pew.x > window.innerWidth || pew.y < 0 || pew.y > window.innerHeight) {
+        if (pew.x < 0 || pew.x > canvas.width || pew.y < 0 || pew.y > canvas.height) {
             destroy(i)
             i--;
         }

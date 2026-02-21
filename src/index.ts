@@ -1,19 +1,9 @@
 import * as score from "./score";
 import * as base from "./base";
-import * as canvas from "./canvas";
 import * as ship from "./ship";
 import * as stuff from "./stuff";
 import * as pew from "./pew";
-
-const init = () => {
-    canvas.canvasFullscreen(canvas.base);
-    canvas.canvasWhiteStroke(canvas.base);
-    canvas.canvasFullscreen(canvas.game);
-    canvas.canvasWhiteStroke(canvas.game);
-}
-
-addEventListener('resize', () => init())
-init();
+import { canvas, clearCanvas, context } from "./canvas";
 
 base.draw();
 ship.init();
@@ -58,9 +48,9 @@ const toggleKey = (key: string, state: boolean) => {
 }
 
 const maintext = (t: string) => {
-    const w = canvas.game.context.measureText(t).width;
-    canvas.game.context.resetTransform();
-    canvas.game.context.fillText(t, (window.innerWidth -w)/2, window.innerHeight / 4);
+    const w = context.measureText(t).width;
+    context.resetTransform();
+    context.fillText(t, (canvas.width -w)/2, canvas.height / 4);
 }
 
 const frame = () => {
@@ -68,7 +58,8 @@ const frame = () => {
     ship.move(left, right, up);
     stuff.move();
     pew.move();
-    canvas.clearCanvas(canvas.game);
+    clearCanvas();
+    base.draw();
     stuff.draw();
     ship.draw();
     pew.draw();

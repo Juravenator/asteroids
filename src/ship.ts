@@ -1,4 +1,4 @@
-import { game } from "./canvas";
+import { canvas, context } from "./canvas";
 import { cycleNum, drawExplosion } from "./stuff";
 
 export type ShipData = {
@@ -14,8 +14,8 @@ export type ShipData = {
 
 const newShipData = (): ShipData => {
     return {
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
+        x: canvas.width / 2,
+        y: canvas.height / 2,
         rot: 0,
         vx: 0,
         vy: 0,
@@ -53,9 +53,9 @@ export const init = () => {
 }
 
 export const draw = () => {
-    game.context.resetTransform();
-    game.context.translate(shipData.x, shipData.y);
-    game.context.rotate(shipData.rot);
+    context.resetTransform();
+    context.translate(shipData.x, shipData.y);
+    context.rotate(shipData.rot);
     if (shipData.destroyed) {
         const timediff = window.performance.now() - shipData.destroyed;
         if (timediff < 2000) {
@@ -67,7 +67,7 @@ export const draw = () => {
             }
         }
     } else {
-        game.context.stroke(shipp);
+        context.stroke(shipp);
     }
 }
 
@@ -87,15 +87,15 @@ export const move = (left: boolean, right: boolean, up: boolean) => {
     shipData.y -= shipData.vy; // y in canvas is 0 at the top
 
     if (shipData.x < -20) {
-        shipData.x = window.innerWidth + 20
+        shipData.x = canvas.width + 20
     }
-    if (shipData.x > window.innerWidth + 20) {
+    if (shipData.x > canvas.width + 20) {
         shipData.x = -20;
     }
     if (shipData.y < -20) {
-        shipData.y = window.innerHeight + 20
+        shipData.y = canvas.height + 20
     }
-    if (shipData.y > window.innerHeight + 20) {
+    if (shipData.y > canvas.height + 20) {
         shipData.y = -20;
     }
 };

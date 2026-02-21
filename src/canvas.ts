@@ -1,32 +1,20 @@
-type Canvas = {
-    canvas: HTMLCanvasElement,
-    context: CanvasRenderingContext2D,
-};
+export const canvas = document.querySelector("#game")! as HTMLCanvasElement;
+export const context = canvas.getContext('2d')!;
 
-const getCanvas = (name: string): Canvas => {
-    const canvas = document.querySelector(name)! as HTMLCanvasElement;
-    const context = canvas.getContext('2d')!;
-    return {canvas, context}
-}
-
-export const base = getCanvas('#base');
-export const game = getCanvas('#game');
-
-export const clearCanvas = (c: Canvas) => {
-    c.context.resetTransform();
-    c.context.clearRect(0, 0, c.canvas.width, c.canvas.height);
-}
-
-export const canvasFullscreen = (c: Canvas) => {
+const init = () => {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    c.canvas.width = w;
-    c.canvas.height = h;
+    canvas.width = w;
+    canvas.height = h;
+    context.strokeStyle = 'white';
+    context.fillStyle = 'white';
+    context.lineWidth = 1;
+    context.font = "48px 'Press Start 2P', system-ui";
 }
+init();
+addEventListener('resize', () => init())
 
-export const canvasWhiteStroke = (c: Canvas) => {
-    c.context.strokeStyle = 'white';
-    c.context.fillStyle = 'white';
-    c.context.lineWidth = 1;
-    c.context.font = "48px 'Press Start 2P', system-ui";
+export const clearCanvas = () => {
+    context.resetTransform();
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }
