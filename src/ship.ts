@@ -55,7 +55,7 @@ export const init = () => {
     draw();
 }
 
-export const draw = () => {
+export const draw = (up = false) => {
     context.resetTransform();
     context.translate(shipData.x, shipData.y);
     context.rotate(shipData.rot);
@@ -71,6 +71,12 @@ export const draw = () => {
         }
     } else {
         context.stroke(shipp);
+        if (up) {
+            context.moveTo(-5, 10);
+            context.lineTo(0, 15);
+            context.lineTo(5, 10);
+            context.stroke();
+        }
     }
 }
 

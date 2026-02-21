@@ -71,7 +71,7 @@ const frame = () => {
     clearCanvas();
     base.draw();
     stuff.draw();
-    ship.draw();
+    ship.draw(up);
     pew.draw();
 
     if (score.data.died && score.data.lives == 0 || !score.data.firstinput) {
