@@ -56,6 +56,13 @@ export const init = () => {
 }
 
 export const draw = (up = false) => {
+    if (shipData.protected && score.data.firstinput) {
+        const timediff = window.performance.now() - shipData.protected!;
+        const evencycle = cycleNum(1000, 8, timediff) % 2;
+        if (evencycle) {
+            return;
+        }
+    }
     context.resetTransform();
     context.translate(shipData.x, shipData.y);
     context.rotate(shipData.rot);

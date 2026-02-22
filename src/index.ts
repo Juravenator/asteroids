@@ -23,11 +23,9 @@ addEventListener('keydown', e => {
         return
     }
     if (!score.data.firstinput) {
+        score.reset();
         score.data.firstinput = true;
         ship.shipData.protected = null;
-    }
-    if (score.data.died && score.data.lives == 0) {
-        score.reset()
     }
     toggleKey(e.key, true);
     if (e.key == " ") {
