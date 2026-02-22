@@ -9,7 +9,8 @@
   "private": true,
   "dependencies": {
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "rollup": "^4.57.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.59.0",
     "typescript": "^5.9.3"
   }
 }
