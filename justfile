@@ -15,6 +15,7 @@ html-watch:
 html:
     mkdir -p dist
     rsync -a src/*.html dist
+    rsync -a src/assets dist
 
 run-server:
     mkdir -p dist

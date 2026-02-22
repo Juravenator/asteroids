@@ -2,6 +2,7 @@ import { canvas, context } from "./canvas";
 import { pews } from "./pew";
 import * as score from "./score";
 import * as ship from "./ship";
+import { playExplosion } from "./audio";
 
 export const init = () => {
     for (let i = 0; i < 10; i++) {
@@ -113,6 +114,7 @@ export const draw = () => {
                 if (context.isPointInPath(pew.x, pew.y)) {
                     asteroid.destroyed = window.performance.now();
                     score.data.score += 10;
+                    playExplosion();
                     asteroids.push(newAstroid());
                 }
             }

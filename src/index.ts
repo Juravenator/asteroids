@@ -3,6 +3,7 @@ import * as base from "./base";
 import * as ship from "./ship";
 import * as stuff from "./stuff";
 import * as pew from "./pew";
+import { play } from "./audio";
 import { canvas, clearCanvas, context } from "./canvas";
 
 base.draw();
@@ -13,6 +14,7 @@ let left = false;
 let right = false;
 let up = false;
 let spacepressed: number | null = null;
+let enginesound: AudioBufferSourceNode | undefined;
 addEventListener('keydown', e => {
     if (score.data.inputdisabled) {
         left = right = up = false;
@@ -51,6 +53,16 @@ const toggleKey = (key: string, state: boolean) => {
         right = state
     } else if (key == "ArrowUp") {
         up = state
+        if (state) {
+            if (!enginesound) {
+                enginesound = play('engine');
+            }
+        } else {
+            if (enginesound) {
+                enginesound.stop();
+                enginesound = undefined;
+            }
+        }
     }
 }
 
@@ -72,8 +84,10 @@ const frame = () => {
     ship.draw(up);
     pew.draw();
 
-    if (score.data.died && score.data.lives == 0 || !score.data.firstinput) {
-        maintext(score.data.inputdisabled ? "game over" : "press to play")
+    if ((score.data.died && score.data.lives == 0) || !score.data.firstinput) {
+        if (score.data.died && window.performance.now() - score.data.died > 1000) {
+            maintext(score.data.inputdisabled ? "game over" : "press to play")
+        }
     }
 };
 requestAnimationFrame(frame);

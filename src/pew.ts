@@ -1,6 +1,7 @@
 import { canvas, context } from "./canvas";
 import { shipData } from "./ship";
 import * as score from "./score";
+import { play } from "./audio";
 
 export type Pew = {
     x: number,
@@ -50,4 +51,5 @@ export const pew = () => {
     if (score.data.score) {
         score.data.score -= 1;
     }
+    play('laser');
 };

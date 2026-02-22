@@ -1,10 +1,11 @@
+import { play, playExplosion } from "./audio";
 import * as ship from "./ship";
 import * as stuff from "./stuff";
 
 export type Score = {
     score: number,
     lives: number,
-    died: boolean,
+    died: number | null,
     firstinput: boolean,
     inputdisabled: boolean, // dead time just after game over
 };
@@ -12,13 +13,13 @@ const newScore = (): Score => {
     return {
         score: 0,
         lives: 5,
-        died: false,
+        died: null,
         firstinput: false,
         inputdisabled: false,
     }
 }
 export let data = newScore();
-data.died = true; // pretend, so we see the new game text
+data.died = 1; // pretend, so we see the new game text
 export const reset = () => {
     data = newScore();
 };
@@ -31,6 +32,7 @@ export const die = () => {
         data.lives -= 1;
         ship.shipData.destroyed = ship.shipData.protected = window.performance.now();
         data.inputdisabled = true;
+        playExplosion();
         if (data.lives) {
             setTimeout(() => {
                 data.inputdisabled = false;
@@ -40,12 +42,15 @@ export const die = () => {
                 }, 2000);
             }, 2000);
         } else {
-            data.died = true;
-            data.inputdisabled = true;
+            data.died = window.performance.now();
+            setTimeout(() => {
+                play('game_over');
+            }, 1000);
             setTimeout(() => {
                 ship.reset();
                 stuff.reset();
-                data.inputdisabled = false
+                data.inputdisabled = false;
+                data.firstinput = false;
             }, 5000);
         }
     }
