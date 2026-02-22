@@ -30,7 +30,7 @@ export const die = () => {
     }
     if (data.lives) {
         data.lives -= 1;
-        ship.shipData.destroyed = ship.shipData.protected = window.performance.now();
+        data.died = ship.shipData.destroyed = ship.shipData.protected = window.performance.now();
         data.inputdisabled = true;
         playExplosion();
         if (data.lives) {
@@ -42,7 +42,6 @@ export const die = () => {
                 }, 2000);
             }, 2000);
         } else {
-            data.died = window.performance.now();
             setTimeout(() => {
                 play('game_over');
             }, 1000);
