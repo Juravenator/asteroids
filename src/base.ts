@@ -1,7 +1,7 @@
 import { canvas, context } from "./canvas";
 import * as score from "./score";
 import { shipData } from "./ship";
-import { cycleNum } from "./stuff";
+import { asteroids, cycleNum } from "./stuff";
 
 const heart = new Path2D();
 heart.moveTo(7.5, 12.5);
@@ -54,5 +54,10 @@ export const draw = () => {
 
     context.resetTransform();
     context.font = "12px 'Press Start 2P', system-ui";
-    context.fillText(score.data.score.toString(), 10, 22);
+    context.fillText(`score: ${score.data.score}`, 10, 22);
+    context.fillText(`level: ${asteroids.length}`, 10, 36);
+    const ms = ((score.data.lives == 0 && score.data.died) || window.performance.now()) - score.data.started;
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor(ms % 60000) / 1000;
+    context.fillText(`time : ${minutes}:${seconds}`, 10, 50);
 }

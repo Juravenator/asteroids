@@ -35,6 +35,7 @@ addEventListener('keydown', e => {
         return;
     }
     if (!score.data.firstinput) {
+        stuff.reset();
         score.reset();
         score.data.firstinput = true;
         ship.shipData.protected = null;

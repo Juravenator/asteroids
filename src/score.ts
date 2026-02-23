@@ -8,6 +8,7 @@ export type Score = {
     died: number | null,
     firstinput: boolean,
     inputdisabled: boolean, // dead time just after game over
+    started: number,
 };
 const newScore = (): Score => {
     return {
@@ -16,6 +17,7 @@ const newScore = (): Score => {
         died: null,
         firstinput: false,
         inputdisabled: false,
+        started: window.performance.now(),
     }
 }
 export let data = newScore();
@@ -47,7 +49,6 @@ export const die = () => {
             }, 1000);
             setTimeout(() => {
                 ship.reset();
-                stuff.reset();
                 data.inputdisabled = false;
                 data.firstinput = false;
             }, 5000);
