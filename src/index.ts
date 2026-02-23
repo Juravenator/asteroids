@@ -24,17 +24,20 @@ addEventListener('keydown', e => {
         }
         return
     }
-    if (!score.data.firstinput) {
-        score.reset();
-        score.data.firstinput = true;
-        ship.shipData.protected = null;
-    }
-    toggleKey(e.key, true);
     if (e.key == " ") {
         if (!spacepressed) {
             spacepressed = setInterval(() => pew.pew(), 200);
             pew.pew();
         }
+    }
+    const valid = toggleKey(e.key, true);
+    if (!valid) {
+        return;
+    }
+    if (!score.data.firstinput) {
+        score.reset();
+        score.data.firstinput = true;
+        ship.shipData.protected = null;
     }
 })
 addEventListener('keyup', e => {
@@ -46,11 +49,13 @@ addEventListener('keyup', e => {
         }
     }
 })
-const toggleKey = (key: string, state: boolean) => {
+const toggleKey = (key: string, state: boolean): boolean => {
     if (key == "ArrowLeft") {
         left = state
+        return true
     } else if (key == "ArrowRight") {
         right = state
+        return true
     } else if (key == "ArrowUp") {
         up = state
         if (state) {
@@ -63,7 +68,9 @@ const toggleKey = (key: string, state: boolean) => {
                 enginesound = undefined;
             }
         }
+        return true
     }
+    return false
 }
 
 const maintext = (t: string) => {
